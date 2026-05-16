@@ -1,0 +1,16 @@
+<include>
+  <context name="default">
+    <extension name="local_extensions">
+      <condition field="destination_number" expression="^(1[0-9]{3})$">
+        <action application="set" data="dialed_extension=$1"/>
+        <action application="set" data="call_timeout=30"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="set" data="continue_on_fail=true"/>
+        <action application="bridge" data="user/$1@${domain_name}"/>
+        <action application="answer"/>
+        <action application="sleep" data="1000"/>
+        <action application="voicemail" data="default ${domain_name} $1"/>
+      </condition>
+    </extension>
+  </context>
+</include>

@@ -1,0 +1,11 @@
+<configuration name="switch.conf" description="Core Configuration">
+  <settings>
+    <param name="colorize-console" value="true"/>
+    <param name="dump-cores" value="yes"/>
+    <param name="max-sessions" value="99999"/>
+    <param name="sessions-per-second" value="999"/>
+    <param name="loglevel" value="debug"/>
+    <param name="rtp-start-port" value="16384"/>
+    <param name="rtp-end-port" value="16484"/>
+  </settings>
+</configuration>

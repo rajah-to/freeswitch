@@ -166,6 +166,10 @@ chmod 750 /etc/freeswitch/tls
 chown -R root:root /usr/share/freeswitch
 chmod -R u=rwX,go=rX /usr/share/freeswitch
 chown freeswitch:freeswitch -R /etc/freeswitch
+cp "${BUILD_DIR}/qwixpbx-freeswitch-conf/systemd.freeswitch.service" /etc/systemd/system/freeswitch.service
+systemctl daemon-reload
+systemctl enable freeswitch
+systemctl start freeswitch
 
 # 9. TLS Generation (Optional initial setup)
 CERT_DIR="/etc/freeswitch/tls"
