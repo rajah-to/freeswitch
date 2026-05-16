@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# FreeSWITCH QwixPBX Installer (Single Bash Script)
+# FreeSWITCH Rajah-TO PBX Installer (Single Bash Script)
 # Replicates the multi-stage Dockerfile environment
 # ==============================================================================
 
@@ -13,8 +13,8 @@ FULL_INSTALL=${FULL:-false}
 DEBUG_MODE=${DEBUG:-false}
 
 # For TLS cert generation (from entrypoint.sh logic)
-CERT_CN=${CERT_CN:-"qwixpbx.local"}
-CERT_O=${CERT_O:-"QwixPBX"}
+CERT_CN=${CERT_CN:-"rajah-to.local"}
+CERT_O=${CERT_O:-"Rajah-TO"}
 CERT_C=${CERT_C:-"US"}
 CERT_DAYS=${CERT_DAYS:-"3650"}
 
@@ -50,7 +50,7 @@ git clone https://github.com/signalwire/libks.git         libs/libks
 git clone https://github.com/freeswitch/sofia-sip.git     libs/sofia-sip
 git clone https://github.com/freeswitch/spandsp.git       libs/spandsp
 git clone https://github.com/signalwire/freeswitch.git    freeswitch
-git clone https://github.com/QwixPBX/freeswitch-conf.git  qwixpbx-freeswitch-conf
+git clone https://github.com/rajah-to/freeswitch.git      rajah-to-conf
 
 # 3. Build & Install Dependencies
 echo "[install] Building libks..."
@@ -79,8 +79,8 @@ cd "${BUILD_DIR}/freeswitch"
 git checkout "${FS_VERSION}"
 ./bootstrap.sh -j
 
-# Use QwixPBX curated modules.conf
-cp "${BUILD_DIR}/qwixpbx-freeswitch-conf/modules.conf" "${BUILD_DIR}/freeswitch/modules.conf"
+# Use Rajah-TO curated modules.conf
+cp "${BUILD_DIR}/rajah-to-conf/modules.conf" "${BUILD_DIR}/freeswitch/modules.conf"
 
 # Pre-create confdir so make install skips vanilla conf entirely
 mkdir -p /etc/freeswitch
@@ -130,9 +130,9 @@ find /usr/lib -maxdepth 1 \
     -o -name 'libks*.so*' \) \
     -exec strip --strip-unneeded {} +
 
-# 7. Apply QwixPBX Configuration
-echo "[install] Applying QwixPBX configuration..."
-cp -rT "${BUILD_DIR}/qwixpbx-freeswitch-conf/conf" /etc/freeswitch
+# 7. Apply Rajah-TO Configuration
+echo "[install] Applying Rajah-TO configuration..."
+cp -rT "${BUILD_DIR}/rajah-to-conf/conf" /etc/freeswitch
 
 # 8. System Setup (Users, Permissions, Dirs)
 echo "[install] Setting up system environment..."
@@ -166,7 +166,7 @@ chmod 750 /etc/freeswitch/tls
 chown -R root:root /usr/share/freeswitch
 chmod -R u=rwX,go=rX /usr/share/freeswitch
 chown freeswitch:freeswitch -R /etc/freeswitch
-cp "${BUILD_DIR}/qwixpbx-freeswitch-conf/systemd.freeswitch.service" /etc/systemd/system/freeswitch.service
+cp "${BUILD_DIR}/rajah-to-conf/systemd.freeswitch.service" /etc/systemd/system/freeswitch.service
 systemctl daemon-reload
 systemctl enable freeswitch
 systemctl start freeswitch
